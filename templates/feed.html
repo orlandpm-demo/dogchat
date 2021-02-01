@@ -16,16 +16,18 @@
         <article class="media">
           <div class="media-left">
             <figure class="image is-64x64">
-              <img src="{{ url_for('static', filename=post[0]+'.png') }}" alt="Image">
+              <img src="{{ url_for('static', filename=post['Handle']+'.png') }}" alt="Image">
             </figure>
           </div>
           <div class="media-content">
             <div class="content">
               <p>
-                <a href="{{ url_for('dog', handle=post[0]) }}"><strong>{{ get_dog_by_handle(post[0])['name'] }}</strong></a> <small>@{{post[0]}}</small> 
+                <a href="{{ url_for('dog', handle=post['Handle']) }}"><strong>{{ post['Name'] }}</strong></a> <small>@{{post['Handle']}}</small> 
                 <!-- <small>31m</small> -->
                 <br>
-                {{ post[1] }}
+                {{ post['Text'] }}
+                <br>
+                Liked by {{ post['LikeCount'] }} dogs
               </p>
             </div>
             <nav class="level is-mobile">
