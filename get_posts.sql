@@ -33,9 +33,13 @@
 SELECT 
     Posts.Handle, 
     Posts.Text,
+    Dogs.Name,
     LikeCountQueryResult.LikeCount
 
 FROM Posts
+
+INNER JOIN Dogs
+        ON Posts.Handle = Dogs.Handle
 
 INNER JOIN (SELECT 
         Posts.Id,
@@ -44,8 +48,7 @@ INNER JOIN (SELECT
         -- Dogs.Name,
         COUNT(Likes.Handle) AS LikeCount
     FROM Posts
-    INNER JOIN Dogs
-        ON Posts.Handle = Dogs.Handle
+    
     LEFT JOIN Likes
         ON Posts.Id = Likes.PostId
     GROUP BY Id) LikeCountQueryResult
