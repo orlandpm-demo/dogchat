@@ -1,13 +1,5 @@
 import pyodbc 
-
-import pyodbc 
-# Some other example server values are
-# server = 'localhost\sqlexpress' # for a named instance
-# server = 'myserver,port' # to specify an alternate port
-server = 'tcp:dogchatserver.database.windows.net' 
-database = 'dogchat' 
-username = 'dogchatadmin' 
-password = 'R0ver123$' 
+from secrets import database, server, username, password
 
 def get_dogs():
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
