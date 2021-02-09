@@ -16,6 +16,7 @@ def get_all_posts():
                         SELECT 
                                 Posts.Handle, 
                                 Posts.Text,
+                                Posts.Id,
                                 Dogs.Name,
                                 LikeCountQueryResult.LikeCount
 
@@ -85,3 +86,23 @@ def get_posts_by_handle(handle):
         results.append(d)
 
     return results
+
+
+def insert_post(handle, post_content):
+    print('query')
+    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+
+    cursor = conn.cursor()
+    result = cursor.execute("""INSERT INTO Posts ([Handle], [Text])
+                        VALUES (?, ?)""", handle, post_content)
+    conn.commit()
+    print(result)
+
+def delete_post(post_id, handle):
+    print('delete query')
+    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+
+    cursor = conn.cursor()
+    result = cursor.execute("""DELETE FROM Posts WHERE Id= ? AND Handle= ?""", post_id, handle)
+    conn.commit()
+    print(result)

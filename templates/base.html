@@ -31,8 +31,8 @@
               Feed
             </a>
 
-            <a class="navbar-item">
-                My Profile
+            <a class="navbar-item" href="{{url_for('dog', handle=user)}}">
+                {{ user }}
               </a>
       
             <!-- <div class="navbar-item has-dropdown is-hoverable">
@@ -61,11 +61,12 @@
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
-                <a class="button is-primary">
+                <!-- <a class="button is-primary">
                   <strong>Sign up</strong>
-                </a>
-                <a class="button is-light">
-                  Log in
+                </a> -->
+
+                <a class="button is-light" href="{{url_for('logout')}}">
+                  Log out
                 </a>
               </div>
             </div>

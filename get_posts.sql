@@ -56,8 +56,8 @@ INNER JOIN (SELECT
 
 
 
+SELECT * FROM Posts
 
-
-
+DELETE FROM Posts WHERE Id=15
 
 
