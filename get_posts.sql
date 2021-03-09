@@ -61,3 +61,20 @@ SELECT * FROM Posts
 DELETE FROM Posts WHERE Id=15
 
 
+SELECT * FROM Dogs
+
+UPDATE Dogs SET AvatarImageName='fido.jpg'
+WHERE Handle='fido'
+
+UPDATE Dogs SET AvatarImageName='rover.PNG'
+WHERE Handle='rover'
+
+UPDATE Dogs SET AvatarImageName='melba.png'
+WHERE Handle='melba'
+UPDATE Dogs SET AvatarImageName='chucky.png'
+WHERE Handle='chucky'
+UPDATE Dogs SET AvatarImageName='rose.png'
+WHERE Handle='rose'
+
+
+UPDATE Dogs SET Email = 'paul@epi.school'
