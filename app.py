@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, abort, request, url_for
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, FileField
-from database import get_all_posts, get_dog_by_handle, get_posts_by_handle, insert_post, delete_post, create_user, make_avatar_url
+from database import get_all_posts, get_dog_by_handle, get_posts_by_handle, insert_post, delete_post, create_user, make_avatar_url, like_post, unlike_post, like_count, toggle_like
 # from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from urllib.parse import urlparse, urljoin
@@ -11,6 +11,7 @@ import secrets
 import os, uuid
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
 import dog_email
+import json
 
 app = Flask(__name__, template_folder="templates", static_url_path='/static')
 
@@ -134,8 +135,8 @@ def test():
 @app.route('/feed')
 @login_required
 def feed():
-    posts = get_all_posts()
     username = current_user.username
+    posts = get_all_posts(username)
     my_avatar_url = make_avatar_url(current_user.avatar_image_name)
     return render_template('feed.html', posts=posts, user=username, my_avatar_url=my_avatar_url)
 
@@ -152,6 +153,21 @@ def create():
     post_content = request.form['post-content']
     insert_post(current_user.username, post_content)
     return redirect(url_for('feed'))
+
+@app.route('/like/<int:post_id>')
+@login_required
+def like(post_id):
+    username = current_user.username
+    like_result = toggle_like(username, post_id)
+    print('like count came back as:', like_result)
+    return json.dumps(like_result)
+
+# @app.route('/unlike/<int:post_id>')
+# @login_required
+# def unlike(post_id):
+#     username = current_user.username
+#     unlike_post(username, post_id)
+#     return redirect(url_for('feed'))
 
 @app.route('/delete')
 @login_required

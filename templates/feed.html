@@ -88,7 +88,6 @@
                 <br>
                 {{ post['Text'] }}
                 <br>
-                Liked by {{ post['LikeCount'] }} dogs
               </p>
             </div>
             <nav class="level is-mobile">
@@ -103,11 +102,18 @@
                     <i class="fas fa-retweet" aria-hidden="true"></i>
                   </span>
                 </a>
-                <a class="level-item" aria-label="like">
+                
+                <a class="level-item like-button" aria-label="like" data-postid="{{post['Id']}}">
                   <span class="icon is-small">
-                    <i class="fas fa-heart" aria-hidden="true"></i>
+                    {% if post['CurrentDogLike'] %}
+                      <i class="fas fa-heart" aria-hidden="true"></i>
+                    {% else %}
+                      <i class="far fa-heart" aria-hidden="true"></i>
+                    {% endif %}
+                    <span class="like-count">{{ post['LikeCount'] }}</span>
                   </span>
-                </a>
+                </a> 
+              
               </div>
             </nav>
           </div>

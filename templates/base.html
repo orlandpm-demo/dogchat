@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
   </head>
   <body>
-      
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item" href="{{url_for('feed')}}" style="font-size: 32px; font-weight: bold; font-family: 'Comic Sans MS', sans-serif;">
@@ -81,5 +82,43 @@
 
     </div>
   </section>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"></script>
+
+    <script>
+      // function like(post_id){
+
+      $('.like-button').click(function() {
+          var post_id = parseInt($(this).attr('data-postid'));
+          // alert('like button clicked! post id was ' + post_id);
+          var $link = $(this);
+          $.ajax({
+            url: '/like/' + post_id
+          }).done(function(data) {
+              var like_info = JSON.parse(data);
+              var like_count = like_info['like_count'];
+              var action = like_info['action'];
+              console.log(like_info);
+              console.log(action);
+              // console.log($link.find('.like-count'));
+              if(action === 'like'){
+                $link.find('.fa-heart').removeClass('far');
+                $link.find('.fa-heart').addClass('fas');
+              }
+              else {
+                $link.find('.fa-heart').removeClass('fas');
+                $link.find('.fa-heart').addClass('far');
+              }
+              $link.find('.like-count').text(like_count);
+          })
+          .fail(function() {
+            alert( "error" );
+          })
+        });
+    </script>
+
   </body>
 </html>

@@ -31,10 +31,12 @@
 --     ('chucky',6)
 
 SELECT 
+    Posts.Id,
     Posts.Handle, 
     Posts.Text,
     Dogs.Name,
-    LikeCountQueryResult.LikeCount
+    LikeCountQueryResult.LikeCount,
+    DL.CurrentDogLike
 
 FROM Posts
 
@@ -54,6 +56,17 @@ INNER JOIN (SELECT
     GROUP BY Id) LikeCountQueryResult
         ON LikeCountQueryResult.Id = Posts.ID
 
+INNER JOIN (SELECT Posts.Id AS Id, COUNT(L.Handle) AS CurrentDogLike FROM Posts
+    LEFT JOIN (SELECT * FROM Likes WHERE Handle='melba') AS L 
+        ON Posts.Id = L.PostId
+    GROUP BY Posts.Id) AS DL
+    ON Posts.Id = DL.Id
+
+
+SELECT Posts.Id AS Id, COUNT(L.Handle) AS CurrentDogLike FROM Posts
+    LEFT JOIN (SELECT * FROM Likes WHERE Handle='melba') AS L 
+        ON Posts.Id = L.PostId
+    GROUP BY Posts.Id
 
 
 SELECT * FROM Posts
@@ -78,3 +91,13 @@ WHERE Handle='rose'
 
 
 UPDATE Dogs SET Email = 'paul@epi.school'
+
+
+SELECT * FROM Likes
+
+
+INSERT INTO Likes (Handle, PostId)
+VALUES
+('rover', 3),
+('rover', 22),
+('rover', 6)
