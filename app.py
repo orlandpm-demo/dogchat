@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, abort, request, url_for
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, FileField
-from database import get_all_posts, get_dog_by_handle, get_posts_by_handle, insert_post, delete_post, create_user, make_avatar_url, like_post, unlike_post, like_count, toggle_like
+from database import get_all_posts, get_dog_by_handle, get_posts_by_handle, insert_post, delete_post, create_user, make_avatar_url, like_post, unlike_post, like_count, toggle_like, get_comments
 # from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from urllib.parse import urlparse, urljoin
@@ -161,6 +161,12 @@ def like(post_id):
     like_result = toggle_like(username, post_id)
     print('like count came back as:', like_result)
     return json.dumps(like_result)
+
+@app.route('/api/comments/<int:post_id>')
+@login_required
+def comments(post_id):
+    c = get_comments(post_id)
+    return json.dumps(c, indent=4)
 
 # @app.route('/unlike/<int:post_id>')
 # @login_required

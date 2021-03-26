@@ -14,3 +14,6 @@ ADD [AvatarImageName] [varchar](50)
 
 ALTER TABLE [dbo].[Dogs]
 ADD [Email] [varchar](50)
+
+
+DELETE FROM Likes WHERE Handle='rover'

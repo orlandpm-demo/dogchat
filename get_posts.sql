@@ -99,5 +99,14 @@ SELECT * FROM Likes
 INSERT INTO Likes (Handle, PostId)
 VALUES
 ('rover', 3),
-('rover', 22),
 ('rover', 6)
+
+SELECT COUNT(*) FROM Likes WHERE PostId = 3
+
+SELECT * FROM Posts
+
+INSERT INTO Comment (Handle, PostId, [Text])
+VALUES
+    ('chucky', 1, 'Can''t wait to see you when you get here!')
+    ('rose', 1, 'You should have moved to Miami!')
+    ('rover', 1, 'I''m so jealous, enjoy the sunshine!')

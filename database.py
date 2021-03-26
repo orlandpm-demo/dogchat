@@ -103,6 +103,18 @@ def get_posts_by_handle(handle):
     return results
 
 
+    
+def get_comments(post_id):
+    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+    cursor = conn.cursor()
+    cursor.execute("SELECT [Handle], [Text] FROM Comment WHERE PostId = ?", post_id)
+    columns = [column[0] for column in cursor.description]
+    results = []
+    for row in cursor:
+        d = dict(zip(columns,row))
+        results.append(d)
+    return results
+
 def insert_post(handle, post_content):
     print('query')
     conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
