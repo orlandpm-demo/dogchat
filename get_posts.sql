@@ -107,6 +107,8 @@ SELECT * FROM Posts
 
 INSERT INTO Comment (Handle, PostId, [Text])
 VALUES
-    ('chucky', 1, 'Can''t wait to see you when you get here!')
-    ('rose', 1, 'You should have moved to Miami!')
+    ('chucky', 1, 'Can''t wait to see you when you get here!'),
+    ('rose', 1, 'You should have moved to Miami!'),
     ('rover', 1, 'I''m so jealous, enjoy the sunshine!')
+
+SELECT * FROM Comment

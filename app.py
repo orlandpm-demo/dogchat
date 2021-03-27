@@ -123,7 +123,7 @@ def login():
             if not is_safe_url(next):
                 return flask.abort(400)
 
-            return flask.redirect(next or flask.url_for('feed'))
+            return flask.redirect(next or flask.url_for('splash'))
     return flask.render_template('login.html', form=form, reset_password_form=reset_password_form)
 
 
@@ -132,27 +132,12 @@ def login():
 def test():
     return render_template('test.html')
 
-@app.route('/feed')
-@login_required
-def feed():
-    username = current_user.username
-    posts = get_all_posts(username)
-    my_avatar_url = make_avatar_url(current_user.avatar_image_name)
-    return render_template('feed.html', posts=posts, user=username, my_avatar_url=my_avatar_url)
-
-@app.route('/dog/<string:handle>')
-@login_required
-def dog(handle):
-    dog = get_dog_by_handle(handle)
-    posts = get_posts_by_handle(handle)
-    return render_template('dog.html', dog=dog, posts=posts)
-
-@app.route('/create', methods = ['POST'])
-@login_required
-def create():
-    post_content = request.form['post-content']
-    insert_post(current_user.username, post_content)
-    return redirect(url_for('feed'))
+# @app.route('/dog/<string:handle>')
+# @login_required
+# def dog(handle):
+#     dog = get_dog_by_handle(handle)
+#     posts = get_posts_by_handle(handle)
+#     return render_template('dog.html', dog=dog, posts=posts)
 
 @app.route('/like/<int:post_id>')
 @login_required
@@ -164,30 +149,50 @@ def like(post_id):
 
 @app.route('/api/comments/<int:post_id>')
 @login_required
-def comments(post_id):
+def comments_api(post_id):
     c = get_comments(post_id)
     return json.dumps(c, indent=4)
 
-# @app.route('/unlike/<int:post_id>')
-# @login_required
-# def unlike(post_id):
+@app.route('/api/feed')
+@login_required
+def feed_api():
+    username = current_user.username
+    posts = get_all_posts(username)
+    return json.dumps(posts, indent=4)
+
+@app.route('/api/dog/<string:handle>')
+@login_required
+def dog_api(handle):
+    dog = get_dog_by_handle(handle)
+    posts = get_posts_by_handle(handle)
+    data = {
+        'dog':dog,
+        'posts':posts
+    }
+    return json.dumps(data, indent=4)
+
+# def feed():
 #     username = current_user.username
-#     unlike_post(username, post_id)
+#     posts = get_all_posts(username)
+#     my_avatar_url = make_avatar_url(current_user.avatar_image_name)
+#     return render_template('feed.html', posts=posts, user=username, my_avatar_url=my_avatar_url)
+
+
+
+# @app.route('/delete')
+# @login_required
+# def delete():
+#     post_id = request.args.get('post_id')
+#     delete_post(post_id,current_user.username)
 #     return redirect(url_for('feed'))
 
-@app.route('/delete')
-@login_required
-def delete():
-    post_id = request.args.get('post_id')
-    delete_post(post_id,current_user.username)
-    return redirect(url_for('feed'))
-
 @app.route('/')
+@login_required
 def splash():
     # if auth.current_user():
-    #     return redirect(url_for('feed'))
+        return render_template('base.html', username=current_user.username)
     # else:
-        return render_template('splash.html')
+    #     return redirect(url_for('login'))
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -226,7 +231,7 @@ def signup():
         if not is_safe_url(next):
             return flask.abort(400)
 
-        return flask.redirect(next or flask.url_for('feed'))
+        return flask.redirect(next or flask.url_for('splash'))
     return render_template('signup.html',form=form)
 
 # @app.route('/logout')

@@ -11,7 +11,7 @@
 
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-          <a class="navbar-item" href="{{url_for('feed')}}" style="font-size: 32px; font-weight: bold; font-family: 'Comic Sans MS', sans-serif;">
+          <a class="navbar-item" href="{{url_for('splash')}}" style="font-size: 32px; font-weight: bold; font-family: 'Comic Sans MS', sans-serif;">
             DogChat
           </a>
       
@@ -24,39 +24,17 @@
       
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-start">
-            <a class="navbar-item" href="{{url_for('feed')}}">
+            <a class="navbar-item feed-button">
               Home
             </a>
       
-            <a class="navbar-item" href="{{url_for('feed')}}">
+            <a class="navbar-item feed-button">
               Feed
             </a>
 
-            <a class="navbar-item" href="{{url_for('dog', handle=user)}}">
-                {{ user }}
+            <a class="navbar-item my-profile-button">
+                {{ username }}
               </a>
-      
-            <!-- <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">
-                More
-              </a>
-      
-              <div class="navbar-dropdown">
-                <a class="navbar-item">
-                  About
-                </a>
-                <a class="navbar-item">
-                  Jobs
-                </a>
-                <a class="navbar-item">
-                  Contact
-                </a>
-                <hr class="navbar-divider">
-                <a class="navbar-item">
-                  Report an issue
-                </a>
-              </div>
-            </div> -->
           </div>
       
           <div class="navbar-end">
@@ -76,9 +54,8 @@
       </nav>
 
   <section class="section">
-    <div class="container">
+    <div class="container content" id="main">
 
-        {% block content %}{% endblock %}
 
     </div>
   </section>
@@ -88,62 +65,7 @@
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"></script>
 
-    <script>
-      // function like(post_id){
-
-      $('.comment-button').click(function(){
-        var post_id = parseInt($(this).closest('.post-box').attr('data-postid'));
-        var $comments = $(this).closest('.post-box').find('.comments');
-        $.ajax({
-            url: '/api/comments/' + post_id
-          }).done(function(data) {
-            var comments = JSON.parse(data);
-            $comments.html('');
-            if(comments.length == 0){
-              $comments.append(`<li>No comments yet!</li>`);
-            }
-            else {
-              for (var i = 0; i < comments.length; i++){
-                var handle = comments[i]['Handle'];
-                var text = comments[i]['Text'];
-                $comments.append(`<li><b>${handle}:</b> ${text} </li>`);
-              }
-            }
-            
-          })
-          .fail(function() {
-            alert( "failed to get comments" );
-          });
-      });
-
-      $('.like-button').click(function() {
-          var post_id = parseInt($(this).closest('.post-box').attr('data-postid'));
-          // alert('like button clicked! post id was ' + post_id);
-          var $link = $(this);
-          $.ajax({
-            url: '/like/' + post_id
-          }).done(function(data) {
-              var like_info = JSON.parse(data);
-              var like_count = like_info['like_count'];
-              var action = like_info['action'];
-              console.log(like_info);
-              console.log(action);
-              // console.log($link.find('.like-count'));
-              if(action === 'like'){
-                $link.find('.fa-heart').removeClass('far');
-                $link.find('.fa-heart').addClass('fas');
-              }
-              else {
-                $link.find('.fa-heart').removeClass('fas');
-                $link.find('.fa-heart').addClass('far');
-              }
-              $link.find('.like-count').text(like_count);
-          })
-          .fail(function() {
-            alert( "error" );
-          })
-        });
-    </script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 
   </body>
 </html>
